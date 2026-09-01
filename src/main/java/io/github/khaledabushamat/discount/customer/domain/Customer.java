@@ -1,7 +1,6 @@
 package io.github.khaledabushamat.discount.customer.domain;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 public record Customer(
@@ -17,7 +16,7 @@ public record Customer(
         return types.contains(type);
     }
 
-    public long yearsAsCustomer(LocalDate asOf) {
-        return ChronoUnit.YEARS.between(joinedAt, asOf);
+    public boolean hasBeenCustomerForMoreThan(int years, LocalDate asOf) {
+        return joinedAt.plusYears(years).isBefore(asOf);
     }
 }

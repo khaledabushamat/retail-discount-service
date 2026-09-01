@@ -20,7 +20,7 @@ class LoyaltyDiscountPolicy implements PercentageDiscountPolicy {
 
     @Override
     public boolean appliesTo(Bill bill) {
-        return bill.customer().yearsAsCustomer(bill.billedOn()) > MINIMUM_YEARS;
+        return bill.customer().hasBeenCustomerForMoreThan(MINIMUM_YEARS, bill.billedOn());
     }
 
     @Override
