@@ -5,6 +5,11 @@ spring:
   profiles:
     default: local
 
+  data:
+    mongodb:
+      representation:
+        big-decimal: decimal128
+
   jpa:
     hibernate:
       ddl-auto: validate
@@ -39,13 +44,15 @@ spring:
   config:
     activate:
       on-profile: local
+  docker:
+    compose:
+      enabled: false
   datasource:
     url: "${POSTGRES_URL:jdbc:postgresql://localhost:5432/discounts}"
     username: ${POSTGRES_USER:discount_user}
     password: ${POSTGRES_PASSWORD:secret}
-  data:
-    mongodb:
-      uri: "${MONGO_URI:mongodb://root:secret@localhost:27017/discounts?authSource=admin}"
+  mongodb:
+    uri: "${MONGO_URI:mongodb://root:secret@localhost:27017/discounts?authSource=admin}"
 
 ---
 spring:
@@ -59,6 +66,5 @@ spring:
     url: "${POSTGRES_URL:jdbc:postgresql://postgres:5432/discounts}"
     username: ${POSTGRES_USER:discount_user}
     password: ${POSTGRES_PASSWORD:secret}
-  data:
-    mongodb:
-      uri: "${MONGO_URI:mongodb://root:secret@mongodb:27017/discounts?authSource=admin}"
+  mongodb:
+    uri: "${MONGO_URI:mongodb://root:secret@mongodb:27017/discounts?authSource=admin}"
