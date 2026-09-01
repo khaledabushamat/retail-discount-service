@@ -118,5 +118,20 @@ class MoneyTest {
         void equalValuesShareHashCode() {
             assertThat(Money.of("5.0")).hasSameHashCodeAs(Money.of("5.00"));
         }
+
+        @Test
+        void isNotEqualToNull() {
+            assertThat(Money.of("5.00")).isNotEqualTo(null);
+        }
+
+        @Test
+        void isNotEqualToOtherTypes() {
+            assertThat(Money.of("5.00")).isNotEqualTo("5.00");
+        }
+
+        @Test
+        void isNotEqualToDifferentAmount() {
+            assertThat(Money.of("5.00")).isNotEqualTo(Money.of("5.01"));
+        }
     }
 }
