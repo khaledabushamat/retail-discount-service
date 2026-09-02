@@ -7,10 +7,10 @@ Calculates the net payable amount for a set of purchased products, applying the 
 Requires Docker. Everything runs from one command:
 
 ```bash
-docker compose up -d --build
+docker compose up -d --build app
 ```
 
-This starts PostgreSQL, MongoDB, and the application on port 8080. Schema migrations and demo data are applied automatically on first start.
+This starts PostgreSQL, MongoDB, and the application on port 8080. Schema migrations and demo data are applied automatically on first start. The compose file also defines a SonarQube service used for the static analysis report — start it separately with docker compose up -d sonarqube if you want it, since it isn't needed to run the application.
 
 ### Demo tokens
 
@@ -69,6 +69,8 @@ The `emp-001` row is the worked example from the specification.
 ```bash
 ./mvnw clean verify                   # build, test, generate coverage, enforce threshold
 open target/site/jacoco/index.html    # coverage report
+./mvnw spotless:check                 # formatting (also enforced during the build)
+./mvnw spotless:apply                 # fix formatting
 ```
 
 Tests require Docker — integration tests use Testcontainers for PostgreSQL and MongoDB.
