@@ -31,6 +31,22 @@ services:
       timeout: 3s
       retries: 10
 
+  app:
+    build: .
+    image: retail-discount-service:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      POSTGRES_USER: ${POSTGRES_USER:-discount_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secret}
+      JWT_SECRET: ${JWT_SECRET:-local-development-secret-at-least-32-bytes-long}
+    ports:
+      - '8080:8080'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+
 volumes:
   postgres-data:
   mongo-data:
