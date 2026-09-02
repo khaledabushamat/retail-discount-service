@@ -7,6 +7,7 @@ import com.nimbusds.jwt.*;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 
 public final class TestTokens {
 
@@ -32,6 +33,8 @@ public final class TestTokens {
     }
 
     public static void main(String[] args) {
-        System.out.println(forCustomer(args.length > 0 ? args[0] : "emp-001"));
+        for (String id : List.of("emp-001", "aff-001", "loyal-001", "new-001")) {
+            System.out.println(id + ": " + forCustomer(id));
+        }
     }
 }
