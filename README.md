@@ -101,6 +101,12 @@ The requirements leave several things open. Each decision below is isolated to o
 | 8 | Can the net payable go negative? | No — floored at zero | `Money.minus` cannot produce a negative amount. |
 | 9 | Currency and tax | Single currency, no tax | Neither is mentioned in the requirements. |
 
+## Class diagram
+
+![Class diagram](docs/class-diagram.png)
+
+Source: [`docs/class-diagram.puml`](docs/class-diagram.puml)
+
 ## Design decisions
 
 **Discount rules use the strategy pattern.** Each rule is a separate `DiscountPolicy` implementation. The engine collects every applicable percentage discount and takes the largest (rule 6), then adds every flat discount. Adding a new discount means adding a class — the engine is not modified. Two marker interfaces, `PercentageDiscountPolicy` and `FlatDiscountPolicy`, let Spring inject the two families as separate lists so the distinction is made by the type system rather than a runtime check.
