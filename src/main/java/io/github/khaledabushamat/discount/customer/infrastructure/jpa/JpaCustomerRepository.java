@@ -1,11 +1,12 @@
 package io.github.khaledabushamat.discount.customer.infrastructure.jpa;
 
-import io.github.khaledabushamat.discount.customer.domain.Customer;
-import io.github.khaledabushamat.discount.customer.domain.CustomerRepository;
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import io.github.khaledabushamat.discount.customer.domain.Customer;
+import io.github.khaledabushamat.discount.customer.domain.CustomerRepository;
 
 @Component
 class JpaCustomerRepository implements CustomerRepository {
@@ -23,9 +24,6 @@ class JpaCustomerRepository implements CustomerRepository {
     }
 
     private Customer toDomain(CustomerEntity entity) {
-        return new Customer(
-                entity.getExternalId(),
-                entity.getJoinedAt(),
-                entity.getTypes());
+        return new Customer(entity.getExternalId(), entity.getJoinedAt(), entity.getTypes());
     }
 }

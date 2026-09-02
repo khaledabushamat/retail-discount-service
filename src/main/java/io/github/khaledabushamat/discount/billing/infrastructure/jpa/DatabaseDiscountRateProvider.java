@@ -1,13 +1,14 @@
 package io.github.khaledabushamat.discount.billing.infrastructure.jpa;
 
-import io.github.khaledabushamat.discount.billing.domain.DiscountRateProvider;
-import io.github.khaledabushamat.discount.billing.domain.DiscountType;
-import org.springframework.stereotype.Component;
+import static java.util.stream.Collectors.toUnmodifiableMap;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
-import static java.util.stream.Collectors.toUnmodifiableMap;
+import org.springframework.stereotype.Component;
+
+import io.github.khaledabushamat.discount.billing.domain.DiscountRateProvider;
+import io.github.khaledabushamat.discount.billing.domain.DiscountType;
 
 @Component
 class DatabaseDiscountRateProvider implements DiscountRateProvider {
@@ -16,9 +17,7 @@ class DatabaseDiscountRateProvider implements DiscountRateProvider {
 
     DatabaseDiscountRateProvider(DiscountRateEntityRepository repository) {
         this.rates = repository.findAll().stream()
-                .collect(toUnmodifiableMap(
-                        r -> DiscountType.valueOf(r.getType()),
-                        DiscountRateEntity::getPercentage));
+                .collect(toUnmodifiableMap(r -> DiscountType.valueOf(r.getType()), DiscountRateEntity::getPercentage));
     }
 
     @Override

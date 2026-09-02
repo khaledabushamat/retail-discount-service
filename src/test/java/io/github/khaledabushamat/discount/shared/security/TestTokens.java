@@ -1,18 +1,17 @@
 package io.github.khaledabushamat.discount.shared.security;
 
-import com.nimbusds.jose.*;
-import com.nimbusds.jose.crypto.MACSigner;
-import com.nimbusds.jwt.*;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
+import com.nimbusds.jose.*;
+import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jwt.*;
+
 public final class TestTokens {
 
-    private static final String SECRET =
-            "local-development-secret-at-least-32-bytes-long";
+    private static final String SECRET = "local-development-secret-at-least-32-bytes-long";
 
     public static String forCustomer(String externalId) {
         try {
@@ -22,8 +21,7 @@ public final class TestTokens {
                     .expirationTime(Date.from(Instant.now().plus(365, ChronoUnit.DAYS)))
                     .build();
 
-            SignedJWT jwt = new SignedJWT(
-                    new JWSHeader(JWSAlgorithm.HS256), claims);
+            SignedJWT jwt = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claims);
             jwt.sign(new MACSigner(SECRET.getBytes()));
 
             return jwt.serialize();

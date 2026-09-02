@@ -1,13 +1,14 @@
 package io.github.khaledabushamat.discount.billing.domain;
 
-import io.github.khaledabushamat.discount.customer.domain.Customer;
-import io.github.khaledabushamat.discount.customer.domain.CustomerType;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.util.Set;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+
+import io.github.khaledabushamat.discount.customer.domain.Customer;
+import io.github.khaledabushamat.discount.customer.domain.CustomerType;
 
 class CustomerTest {
 
@@ -20,8 +21,7 @@ class CustomerTest {
 
     @Test
     void identifiesItsTypes() {
-        var customer = new Customer("c-1", LocalDate.of(2024, 1, 1),
-                Set.of(CustomerType.EMPLOYEE));
+        var customer = new Customer("c-1", LocalDate.of(2024, 1, 1), Set.of(CustomerType.EMPLOYEE));
 
         assertThat(customer.isOfType(CustomerType.EMPLOYEE)).isTrue();
         assertThat(customer.isOfType(CustomerType.AFFILIATE)).isFalse();
@@ -42,7 +42,9 @@ class CustomerTest {
     void tenureIsMeasuredFromJoinDate() {
         var customer = new Customer("c-1", LocalDate.of(2024, 1, 1), Set.of());
 
-        assertThat(customer.hasBeenCustomerForMoreThan(2, LocalDate.of(2026, 1, 2))).isTrue();
-        assertThat(customer.hasBeenCustomerForMoreThan(2, LocalDate.of(2026, 1, 1))).isFalse();
+        assertThat(customer.hasBeenCustomerForMoreThan(2, LocalDate.of(2026, 1, 2)))
+                .isTrue();
+        assertThat(customer.hasBeenCustomerForMoreThan(2, LocalDate.of(2026, 1, 1)))
+                .isFalse();
     }
 }

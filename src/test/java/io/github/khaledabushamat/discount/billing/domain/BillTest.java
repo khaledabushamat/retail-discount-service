@@ -3,11 +3,11 @@ package io.github.khaledabushamat.discount.billing.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+
+import org.junit.jupiter.api.Test;
 
 import io.github.khaledabushamat.discount.catalog.domain.Category;
 import io.github.khaledabushamat.discount.customer.domain.Customer;
@@ -15,8 +15,7 @@ import io.github.khaledabushamat.discount.shared.Money;
 
 class BillTest {
 
-    private static final Customer ANY_CUSTOMER =
-            new Customer("cust-1", LocalDate.of(2024, 1, 1), Set.of());
+    private static final Customer ANY_CUSTOMER = new Customer("cust-1", LocalDate.of(2024, 1, 1), Set.of());
     private static final LocalDate ANY_DATE = LocalDate.of(2026, 1, 1);
 
     private static LineItem item(Category category, String price, int quantity) {
@@ -29,9 +28,7 @@ class BillTest {
 
     @Test
     void grossTotalSumsAllItems() {
-        Bill bill = billOf(
-                item(Category.GROCERY, "100.00", 1),
-                item(Category.NON_GROCERY, "890.00", 1));
+        Bill bill = billOf(item(Category.GROCERY, "100.00", 1), item(Category.NON_GROCERY, "890.00", 1));
 
         assertThat(bill.grossTotal()).isEqualTo(Money.of("990.00"));
     }
@@ -45,9 +42,7 @@ class BillTest {
 
     @Test
     void nonGroceryTotalExcludesGroceries() {
-        Bill bill = billOf(
-                item(Category.GROCERY, "100.00", 1),
-                item(Category.NON_GROCERY, "890.00", 1));
+        Bill bill = billOf(item(Category.GROCERY, "100.00", 1), item(Category.NON_GROCERY, "890.00", 1));
 
         assertThat(bill.nonGroceryTotal()).isEqualTo(Money.of("890.00"));
     }

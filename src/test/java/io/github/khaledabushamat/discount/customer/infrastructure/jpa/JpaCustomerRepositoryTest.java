@@ -1,16 +1,17 @@
 package io.github.khaledabushamat.discount.customer.infrastructure.jpa;
 
-import io.github.khaledabushamat.discount.customer.domain.CustomerRepository;
-import io.github.khaledabushamat.discount.customer.domain.CustomerType;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.testcontainers.utility.TestcontainersConfiguration;
 
-import java.time.LocalDate;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import io.github.khaledabushamat.discount.customer.domain.CustomerRepository;
+import io.github.khaledabushamat.discount.customer.domain.CustomerType;
 
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest

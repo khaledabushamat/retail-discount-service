@@ -1,16 +1,15 @@
 package io.github.khaledabushamat.discount.billing.api;
 
-import io.github.khaledabushamat.discount.billing.domain.DiscountBreakdown;
-
 import java.math.BigDecimal;
+
+import io.github.khaledabushamat.discount.billing.domain.DiscountBreakdown;
 
 public record DiscountResponse(
         BigDecimal grossTotal,
         BigDecimal percentageDiscount,
         BigDecimal flatDiscount,
         BigDecimal totalDiscount,
-        BigDecimal netPayable
-) {
+        BigDecimal netPayable) {
     static DiscountResponse from(DiscountBreakdown breakdown) {
         return new DiscountResponse(
                 breakdown.grossTotal().toBigDecimal(),

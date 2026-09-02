@@ -1,14 +1,15 @@
 package io.github.khaledabushamat.discount.catalog.infrastructure.mongo;
 
-import io.github.khaledabushamat.discount.catalog.domain.Category;
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.util.List;
+import io.github.khaledabushamat.discount.catalog.domain.Category;
 
 @Profile("!prod")
 @Component
@@ -36,8 +37,7 @@ class ProductCatalogSeeder implements CommandLineRunner {
                 product("headphones-01", "Headphones", Category.NON_GROCERY, "199.99"),
                 product("rice-01", "Rice 5kg", Category.GROCERY, "40.00"),
                 product("milk-01", "Milk 1L", Category.GROCERY, "3.50"),
-                product("coffee-01", "Coffee 500g", Category.GROCERY, "100.00")
-        ));
+                product("coffee-01", "Coffee 500g", Category.GROCERY, "100.00")));
         log.info("Seeded {} products", repository.count());
     }
 

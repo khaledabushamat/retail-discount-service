@@ -3,11 +3,7 @@ package io.github.khaledabushamat.discount.customer.domain;
 import java.time.LocalDate;
 import java.util.Set;
 
-public record Customer(
-        String externalId,
-        LocalDate joinedAt,
-        Set<CustomerType> types
-) {
+public record Customer(String externalId, LocalDate joinedAt, Set<CustomerType> types) {
     public Customer {
         types = types == null ? Set.of() : Set.copyOf(types);
     }

@@ -1,19 +1,20 @@
 package io.github.khaledabushamat.discount.catalog.infrastructure.mongo;
 
-import io.github.khaledabushamat.discount.catalog.domain.Category;
-import io.github.khaledabushamat.discount.catalog.domain.Product;
-import io.github.khaledabushamat.discount.catalog.domain.ProductCatalog;
-import io.github.khaledabushamat.discount.shared.Money;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.testcontainers.utility.TestcontainersConfiguration;
 
-import java.util.List;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import io.github.khaledabushamat.discount.catalog.domain.Category;
+import io.github.khaledabushamat.discount.catalog.domain.Product;
+import io.github.khaledabushamat.discount.catalog.domain.ProductCatalog;
+import io.github.khaledabushamat.discount.shared.Money;
 
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest
@@ -24,8 +25,7 @@ class MongoProductCatalogTest {
 
     @Test
     void seedsProductsOnStartup() {
-        Map<String, Product> products =
-                catalog.findAllById(List.of("laptop-01", "coffee-01"));
+        Map<String, Product> products = catalog.findAllById(List.of("laptop-01", "coffee-01"));
 
         assertThat(products).hasSize(2);
     }
@@ -41,8 +41,7 @@ class MongoProductCatalogTest {
 
     @Test
     void preservesDecimalPrecision() {
-        Product headphones =
-                catalog.findAllById(List.of("headphones-01")).get("headphones-01");
+        Product headphones = catalog.findAllById(List.of("headphones-01")).get("headphones-01");
 
         assertThat(headphones.unitPrice()).isEqualTo(Money.of("199.99"));
     }
@@ -56,8 +55,7 @@ class MongoProductCatalogTest {
 
     @Test
     void returnsOnlyProductsThatExist() {
-        Map<String, Product> products =
-                catalog.findAllById(List.of("laptop-01", "does-not-exist"));
+        Map<String, Product> products = catalog.findAllById(List.of("laptop-01", "does-not-exist"));
 
         assertThat(products).containsOnlyKeys("laptop-01");
     }

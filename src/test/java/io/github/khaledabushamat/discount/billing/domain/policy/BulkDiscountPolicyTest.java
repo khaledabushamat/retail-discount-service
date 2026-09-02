@@ -14,12 +14,7 @@ class BulkDiscountPolicyTest {
     private final BulkDiscountPolicy policy = new BulkDiscountPolicy();
 
     @ParameterizedTest
-    @CsvSource({
-            "990.00, 45.00",
-            "100.00,  5.00",
-            " 99.99,  0.00",
-            "199.99,  5.00"
-    })
+    @CsvSource({"990.00, 45.00", "100.00,  5.00", " 99.99,  0.00", "199.99,  5.00"})
     void givesFiveDollarsPerCompleteHundred(String total, String expected) {
         var bill = bill(recentCustomer(), electronics(total));
 

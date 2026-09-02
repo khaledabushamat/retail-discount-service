@@ -1,12 +1,13 @@
 package io.github.khaledabushamat.discount.catalog.infrastructure.mongo;
 
-import io.github.khaledabushamat.discount.catalog.domain.Category;
+import java.math.BigDecimal;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 
-import java.math.BigDecimal;
+import io.github.khaledabushamat.discount.catalog.domain.Category;
 
 @Document(collection = "products")
 class ProductDocument {
@@ -21,8 +22,7 @@ class ProductDocument {
     @Field(targetType = FieldType.DECIMAL128)
     private BigDecimal unitPrice;
 
-    protected ProductDocument() {
-    }
+    protected ProductDocument() {}
 
     ProductDocument(String id, String name, Category category, BigDecimal unitPrice) {
         this.id = id;

@@ -121,6 +121,14 @@ Source: [`docs/class-diagram.puml`](docs/class-diagram.puml)
 
 **Polyglot persistence.** Customers are relational — a stable schema with types and join dates that are queried and joined — so they live in PostgreSQL with Flyway-managed migrations and `ddl-auto: validate`. The product catalog is document-shaped, since attributes vary by category, so it lives in MongoDB. The calculation reads from both and writes to neither, so no distributed transaction is needed.
 
+**Packages are organised by feature, not by layer.** Each feature — `billing`,
+`catalog`, `customer` — owns its own `domain` and `infrastructure` subpackages,
+rather than the codebase being split into `controller`, `service`, `repository`.
+This keeps a change to one feature inside one package, and it lets implementation
+classes stay package-private: nothing outside `catalog.infrastructure.mongo` can
+reference `ProductDocument`, so the boundary is enforced by the compiler rather
+than by convention.
+
 **The domain has no framework dependencies.** `Money`, `Bill`, `Customer`, `Product` and every policy are plain Java. Persistence types (`CustomerEntity`, `ProductDocument`) are separate and mapped at the boundary, which is why the discount logic can be tested without Spring or a database.
 
 **Scope.** This service calculates discounts only. Bills are owned and persisted by the calling order service; nothing is stored here. Guest checkout is out of scope — every request is authenticated and the customer must exist. Rule 4 is customer-independent, so a guest flow would receive the flat discount and no percentage discount, which an anonymous customer with no types would produce without changing any policy.

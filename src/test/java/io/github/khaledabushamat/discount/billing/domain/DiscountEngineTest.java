@@ -1,26 +1,24 @@
 package io.github.khaledabushamat.discount.billing.domain;
 
-import io.github.khaledabushamat.discount.shared.Money;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-
+import static io.github.khaledabushamat.discount.billing.domain.BillFixtures.bill;
 import static io.github.khaledabushamat.discount.billing.domain.BillFixtures.electronics;
 import static io.github.khaledabushamat.discount.billing.domain.BillFixtures.recentCustomer;
-import static io.github.khaledabushamat.discount.billing.domain.BillFixtures.bill;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import io.github.khaledabushamat.discount.shared.Money;
+
 @ExtendWith(MockitoExtension.class)
 class DiscountEngineTest {
 
-    private final Bill bill = bill(
-            recentCustomer(),
-            electronics("100.00"));
+    private final Bill bill = bill(recentCustomer(), electronics("100.00"));
 
     @Test
     void selectsTheLargestApplicablePercentageDiscount() {
@@ -61,9 +59,7 @@ class DiscountEngineTest {
 
     @Test
     void returnsZeroDiscountWhenNothingApplies() {
-        var engine = new DiscountEngine(
-                List.of(percentagePolicy(false, null)),
-                List.of(flatPolicy(false, null)));
+        var engine = new DiscountEngine(List.of(percentagePolicy(false, null)), List.of(flatPolicy(false, null)));
 
         var result = engine.calculate(bill);
 

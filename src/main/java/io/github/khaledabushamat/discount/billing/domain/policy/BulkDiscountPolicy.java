@@ -1,9 +1,10 @@
 package io.github.khaledabushamat.discount.billing.domain.policy;
 
+import org.springframework.stereotype.Component;
+
 import io.github.khaledabushamat.discount.billing.domain.Bill;
 import io.github.khaledabushamat.discount.billing.domain.FlatDiscountPolicy;
 import io.github.khaledabushamat.discount.shared.Money;
-import org.springframework.stereotype.Component;
 
 @Component
 class BulkDiscountPolicy implements FlatDiscountPolicy {

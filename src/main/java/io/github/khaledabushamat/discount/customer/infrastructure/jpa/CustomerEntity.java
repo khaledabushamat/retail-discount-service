@@ -1,11 +1,12 @@
 package io.github.khaledabushamat.discount.customer.infrastructure.jpa;
 
-import io.github.khaledabushamat.discount.customer.domain.CustomerType;
-import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+
+import jakarta.persistence.*;
+
+import io.github.khaledabushamat.discount.customer.domain.CustomerType;
 
 @Entity
 @Table(name = "customers")
@@ -22,15 +23,12 @@ class CustomerEntity {
     private LocalDate joinedAt;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "customer_types",
-            joinColumns = @JoinColumn(name = "customer_id"))
+    @CollectionTable(name = "customer_types", joinColumns = @JoinColumn(name = "customer_id"))
     @Column(name = "type", nullable = false, length = 32)
     @Enumerated(EnumType.STRING)
     private Set<CustomerType> types = new HashSet<>();
 
-    protected CustomerEntity() {
-    }
+    protected CustomerEntity() {}
 
     String getExternalId() {
         return externalId;
