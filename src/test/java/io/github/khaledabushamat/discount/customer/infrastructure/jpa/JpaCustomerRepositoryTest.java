@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.testcontainers.utility.TestcontainersConfiguration;
 
+import io.github.khaledabushamat.discount.TestcontainersConfiguration;
 import io.github.khaledabushamat.discount.customer.domain.CustomerRepository;
 import io.github.khaledabushamat.discount.customer.domain.CustomerType;
 

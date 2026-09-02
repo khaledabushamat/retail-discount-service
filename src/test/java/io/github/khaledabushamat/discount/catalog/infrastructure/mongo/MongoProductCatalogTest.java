@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.testcontainers.utility.TestcontainersConfiguration;
 
+import io.github.khaledabushamat.discount.TestcontainersConfiguration;
 import io.github.khaledabushamat.discount.catalog.domain.Category;
 import io.github.khaledabushamat.discount.catalog.domain.Product;
 import io.github.khaledabushamat.discount.catalog.domain.ProductCatalog;
