@@ -14,7 +14,7 @@ class DatabaseDiscountRateProvider implements DiscountRateProvider {
 
     private final Map<DiscountType, BigDecimal> rates;
 
-    DatabaseDiscountRateProvider(DiscountRateRepository repository) {
+    DatabaseDiscountRateProvider(DiscountRateEntityRepository repository) {
         this.rates = repository.findAll().stream()
                 .collect(toUnmodifiableMap(
                         r -> DiscountType.valueOf(r.getType()),

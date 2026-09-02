@@ -6,7 +6,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "io.github.khaledabushamat.discount.billing.infrastructure.jpa")
+@EnableJpaRepositories(basePackages = {
+        "io.github.khaledabushamat.discount.billing.infrastructure.jpa",
+        "io.github.khaledabushamat.discount.customer.infrastructure.jpa"
+})
 @EnableMongoRepositories(basePackages = "io.github.khaledabushamat.discount.catalog.infrastructure.mongo")
 public class RetailDiscountServiceApplication {
 
