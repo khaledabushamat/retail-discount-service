@@ -10,7 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 
 @Configuration
-class JwtConfig {
+public class JwtConfig {
 
     @Bean
     JwtDecoder jwtDecoder(@Value("${app.security.jwt.secret}") String secret) {
