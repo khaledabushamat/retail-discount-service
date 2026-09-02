@@ -75,6 +75,25 @@ Tests require Docker — integration tests use Testcontainers for PostgreSQL and
 
 Current coverage: **98% instructions, 92% branches**. The build fails below 90% / 85%.
 
+## Static analysis
+
+SonarQube quality gate: **Passed**. 96.4% coverage, 0% duplication, no
+reliability issues.
+
+![SonarQube report](docs/sonarqube-report.png)
+
+Run it locally with `docker compose up -d sonarqube`, then:
+
+    ./mvnw clean verify sonar:sonar \
+      -Dsonar.projectKey=retail-discount-service \
+      -Dsonar.host.url=http://localhost:9000 \
+      -Dsonar.token=<your-token> \
+      -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+
+The one security finding is Sonar flagging `csrf.disable()`. It does not apply
+here: the service is stateless and authenticates only via Bearer tokens, so
+there is no cookie or session for a cross-site request to exploit.
+
 ## The formula
 
 ```
