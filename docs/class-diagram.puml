@@ -1,0 +1,189 @@
+@startuml Retail Discount Service
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+hide empty members
+
+package "billing.api" {
+  class DiscountController {
+    - service : BillCalculationService
+    + calculate(customerId, request) : DiscountResponse
+  }
+  class CalculateDiscountRequest <<record>> {
+    + lines : List<LineRequest>
+  }
+  class DiscountResponse <<record>> {
+    + grossTotal : BigDecimal
+    + percentageDiscount : BigDecimal
+    + flatDiscount : BigDecimal
+    + totalDiscount : BigDecimal
+    + netPayable : BigDecimal
+  }
+  class ApiExceptionHandler
+}
+
+package "billing.application" {
+  class BillCalculationService {
+    - customers : CustomerRepository
+    - catalog : ProductCatalog
+    - engine : DiscountEngine
+    - clock : Clock
+    + calculate(customerId, lines) : DiscountBreakdown
+  }
+}
+
+package "billing.domain" {
+  class Bill <<record>> {
+    + customer : Customer
+    + items : List<LineItem>
+    + billedOn : LocalDate
+    + grossTotal() : Money
+    + nonGroceryTotal() : Money
+  }
+  class LineItem <<record>> {
+    + productId : String
+    + category : Category
+    + unitPrice : Money
+    + quantity : int
+    + total() : Money
+    + isGrocery() : boolean
+  }
+  class DiscountBreakdown <<record>> {
+    + grossTotal : Money
+    + percentageDiscount : Money
+    + flatDiscount : Money
+    + totalDiscount() : Money
+    + netPayable() : Money
+  }
+  class DiscountEngine {
+    - percentagePolicies : List<PercentageDiscountPolicy>
+    - flatPolicies : List<FlatDiscountPolicy>
+    + calculate(bill) : DiscountBreakdown
+  }
+  interface DiscountPolicy {
+    + appliesTo(bill) : boolean
+    + discountFor(bill) : Money
+  }
+  interface PercentageDiscountPolicy
+  interface FlatDiscountPolicy
+  interface DiscountRateProvider {
+    + rateFor(type) : BigDecimal
+  }
+  enum DiscountType {
+    EMPLOYEE
+    AFFILIATE
+    LOYALTY
+  }
+}
+
+package "billing.domain.policy" {
+  class EmployeeDiscountPolicy
+  class AffiliateDiscountPolicy
+  class LoyaltyDiscountPolicy
+  class BulkDiscountPolicy
+}
+
+package "customer.domain" {
+  class Customer <<record>> {
+    + externalId : String
+    + joinedAt : LocalDate
+    + types : Set<CustomerType>
+    + isOfType(type) : boolean
+    + hasBeenCustomerForMoreThan(years, asOf) : boolean
+  }
+  enum CustomerType {
+    EMPLOYEE
+    AFFILIATE
+  }
+  interface CustomerRepository {
+    + findByExternalId(id) : Optional<Customer>
+  }
+}
+
+package "catalog.domain" {
+  class Product <<record>> {
+    + id : String
+    + name : String
+    + category : Category
+    + unitPrice : Money
+  }
+  enum Category {
+    GROCERY
+    NON_GROCERY
+  }
+  interface ProductCatalog {
+    + findAllById(ids) : Map<String, Product>
+  }
+}
+
+package "shared" {
+  class Money {
+    - amount : BigDecimal
+    + {static} ZERO : Money
+    + {static} of(amount) : Money
+    + plus(other) : Money
+    + minus(other) : Money
+    + multipliedBy(factor) : Money
+    + percentage(percent) : Money
+    + wholeHundreds() : long
+  }
+}
+
+package "infrastructure" {
+  class JpaCustomerRepository
+  class CustomerEntity <<@Entity>>
+  class MongoProductCatalog
+  class ProductDocument <<@Document>>
+  class DatabaseDiscountRateProvider
+  class DiscountRateEntity <<@Entity>>
+  class ProductCatalogSeeder
+}
+
+DiscountController --> BillCalculationService
+DiscountController ..> CalculateDiscountRequest
+DiscountController ..> DiscountResponse
+
+BillCalculationService --> CustomerRepository
+BillCalculationService --> ProductCatalog
+BillCalculationService --> DiscountEngine
+BillCalculationService ..> Bill
+
+DiscountEngine --> PercentageDiscountPolicy
+DiscountEngine --> FlatDiscountPolicy
+DiscountEngine ..> DiscountBreakdown
+
+DiscountPolicy <|-- PercentageDiscountPolicy
+DiscountPolicy <|-- FlatDiscountPolicy
+
+PercentageDiscountPolicy <|.. EmployeeDiscountPolicy
+PercentageDiscountPolicy <|.. AffiliateDiscountPolicy
+PercentageDiscountPolicy <|.. LoyaltyDiscountPolicy
+FlatDiscountPolicy <|.. BulkDiscountPolicy
+
+EmployeeDiscountPolicy --> DiscountRateProvider
+AffiliateDiscountPolicy --> DiscountRateProvider
+LoyaltyDiscountPolicy --> DiscountRateProvider
+DiscountRateProvider ..> DiscountType
+
+Bill "1" *-- "1..*" LineItem
+Bill --> Customer
+LineItem --> Money
+LineItem --> Category
+DiscountBreakdown --> Money
+Customer --> CustomerType
+Product --> Category
+Product --> Money
+
+CustomerRepository ..> Customer
+ProductCatalog ..> Product
+
+CustomerRepository <|.. JpaCustomerRepository
+ProductCatalog <|.. MongoProductCatalog
+DiscountRateProvider <|.. DatabaseDiscountRateProvider
+
+JpaCustomerRepository --> CustomerEntity
+MongoProductCatalog --> ProductDocument
+DatabaseDiscountRateProvider --> DiscountRateEntity
+ProductCatalogSeeder --> ProductDocument
+
+@enduml
